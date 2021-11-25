@@ -11,12 +11,11 @@ class UserCreateSerializer(serializers.Serializer):
     nickname = serializers.CharField(required=True, max_length=45)
 
     def create(self, validated_data):
-        # nickname = str(validated_data['nickname'], "utf-8")
         user = User.objects.create(
-            username=validated_data['username'],
+            username=validated_data.get('username'),
             password=HashService.hash_string_to_password(
-                validated_data['password']),
-            nickname=validated_data['nickname'],
+                validated_data.get('password')),
+            nickname=validated_data.get('nickname'),
         )
 
         user.save()
