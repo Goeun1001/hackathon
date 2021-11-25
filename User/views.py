@@ -20,8 +20,14 @@ def createUser(request):
         if User.objects.filter(
                 username=serializer.validated_data['username']).first() is None:
             serializer.save()
-            return Response({"detail": "ok"},
-                            status=status.HTTP_201_CREATED)
+
+            user = User.objects.get(
+                username=serializer.validated_data['username'])
+            return Response({'access_token':
+                                 JWTService.create_access_token_with_id(user.user_idx),
+                             'nickname': user.nickname,
+                             'gold': user.gold},
+                            status=status.HTTP_200_OK)
         return Response({"detail": "duplicate username"},
                         status=status.HTTP_409_CONFLICT)
 
