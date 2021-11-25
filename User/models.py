@@ -24,7 +24,7 @@ class User(models.Model):
     username = models.CharField(unique=True, max_length=45)
     password = models.CharField(max_length=64)
     nickname = models.CharField(max_length=45)
-    gold = models.IntegerField(blank=True, null=True)
+    gold = models.IntegerField(default=0)
 
     objects = UserManager()
 
