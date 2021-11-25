@@ -48,7 +48,9 @@ def login(request):
                         status=status.HTTP_400_BAD_REQUEST)
 
     return Response({'access_token':
-                         JWTService.create_access_token_with_id(user.user_idx)},
+                         JWTService.create_access_token_with_id(user.user_idx),
+                     'nickname': user.nickname,
+                     'gold': user.gold},
                     status=status.HTTP_200_OK)
     # return Response({
     #     "access_token": JWTService.create_access_token_with_id(

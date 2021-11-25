@@ -48,28 +48,28 @@ class JWTService(object):
 
     @staticmethod
     def create_access_token_with_id(user_id: int,
-                                    expired_minute: int = 10) -> str:
-        return jwt.encode({
-            'id': user_id,
-            'exp': datetime.utcnow()+timedelta(minutes=expired_minute)
-        }, 'JHHONG', algorithm='HS256', headers={
-            'token': 'access'
-        })
-
-    @staticmethod
-    def create_refresh_token_with_id(user_id: int,
-                                     expired_days: int = 14):
+                                    expired_days: int = 14) -> str:
         return jwt.encode({
             'id': user_id,
             'exp': datetime.utcnow()+timedelta(days=expired_days)
-        }, 'JHHONG', algorithm='HS256', headers={
-            'token': 'refresh'
+        }, 'SECRET', algorithm='HS256', headers={
+            'token': 'access'
         })
+
+    # @staticmethod
+    # def create_refresh_token_with_id(user_id: int,
+    #                                  expired_days: int = 14):
+    #     return jwt.encode({
+    #         'id': user_id,
+    #         'exp': datetime.utcnow()+timedelta(days=expired_days)
+    #     }, 'JHHONG', algorithm='HS256', headers={
+    #         'token': 'refresh'
+    #     })
 
     @staticmethod
     def decode_access_token_to_id(access_token: str, token_type):
         if not token_type == jwt.get_unverified_header(access_token)['token']:
             raise jwt.exceptions.InvalidSignatureError
         return jwt.decode(access_token,
-                          'JHHONG',
+                          'SECRET',
                           algorithms=['HS256'])['id']
